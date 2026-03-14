@@ -70,9 +70,8 @@ static void __cdecl Cave1_Handler(uint32_t eax_in, uint32_t ecx, uint32_t edx) {
     uint16_t* const dst = (ecx == 0x0019FB70) ? g_buf_a : g_buf_b;
     if (!dst) return;
 
-    const uintptr_t dst_base = reinterpret_cast<uintptr_t>(dst);
-    const uint32_t  total    = char_count();
-    uint32_t edi = 0;
+    const uint32_t total = char_count();
+     uint32_t edi = 0;
     for (uint32_t cur = eax_in; cur < total; ++cur, ++edi)
         dst[edi] = fill_val;
 
