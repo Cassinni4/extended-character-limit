@@ -79,7 +79,7 @@ static void __cdecl Cave1_Handler(uint32_t eax_in, uint32_t ecx, uint32_t edx) {
     auto mark_special = [&](uintptr_t addr_of_id) {
         const int32_t id = *reinterpret_cast<const int32_t*>(addr_of_id);
         if (id != -1)
-            *reinterpret_cast<uint16_t*>(dst_base + static_cast<uint32_t>(id) * 2) = 0xFFFF;
+            *reinterpret_cast<uint16_t*>(ecx + static_cast<uint32_t>(id) * 2) = 0xFFFF;
     };
     mark_special(0x007F18FC); mark_special(0x007F1910); mark_special(0x007F1958);
     mark_special(0x007F18C4); mark_special(0x007F18E4); mark_special(0x007F18E8);
@@ -91,9 +91,10 @@ static void __cdecl Cave1_Handler(uint32_t eax_in, uint32_t ecx, uint32_t edx) {
     if (struct_count > 0 && struct_base != 0) {
         const auto* p = reinterpret_cast<const int16_t*>(struct_base + 0x1064);
         for (int32_t i = 0; i < struct_count; ++i, p += 0x86C) {
-            const uint8_t flag = *reinterpret_cast<const uint8_t*>(reinterpret_cast<uintptr_t>(p) - 0x1468);
+            const uint8_t flag = *reinterpret_cast<const uint8_t*>(
+                reinterpret_cast<uintptr_t>(p) - 0x1468);
             if ((flag & 1) != 0)
-                *reinterpret_cast<uint16_t*>(dst_base + *p * 2) = 0xFFFF;
+                *reinterpret_cast<uint16_t*>(ecx + static_cast<uint32_t>(*p) * 2) = 0xFFFF;
         }
     }
 }
